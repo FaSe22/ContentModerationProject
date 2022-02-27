@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property mixed $tweets
+ * @property mixed $blogposts
  */
 class User extends Authenticatable
 {
@@ -52,6 +53,15 @@ class User extends Authenticatable
     public function tweets(): HasMany
     {
         return $this->hasMany(Tweet::class);
+    }
+
+    /**
+     * @return HasMany
+     * @author Sebastian Faber <sebastian@startup-werk.de>
+     */
+    public function blogposts(): HasMany
+    {
+        return $this->hasMany(Blogpost::class);
     }
 
 
