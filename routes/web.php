@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BlogpostController;
+use App\Http\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +24,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::resources([
+    'blogposts' => BlogpostController::class,
+    'tweets' => TweetController::class
+]);
