@@ -2,58 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTweetRequest;
+use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
-use Illuminate\Http\Request;
+use App\Repositories\TweetRepository;
 
 class TweetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function __construct()
     {
-        //
+        $this->authorizeResource(Tweet::class, 'tweet');
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the resource.
+     * @param TweetRepository $tweetRepository
      */
-    public function create()
+    public function index(TweetRepository $tweetRepository)
     {
-        //
+        $tweetRepository->tweets();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateTweetRequest $createTweetRequest
+     * @param TweetRepository $tweetRepository
+     * @return void
      */
-    public function store(Request $request)
+    public function store(CreateTweetRequest $createTweetRequest, TweetRepository $tweetRepository)
     {
-        //
+        $tweetRepository->create($createTweetRequest);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Tweet  $tweet
-     * @return \Illuminate\Http\Response
+     * @param Tweet $tweet
+     * @param TweetRepository $tweetRepository
+     * @return Tweet
      */
-    public function show(Tweet $tweet)
+    public function show(Tweet $tweet, TweetRepository $tweetRepository): Tweet
     {
-        //
+        return $tweetRepository->tweet($tweet);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tweet  $tweet
-     * @return \Illuminate\Http\Response
+     * @param Tweet $tweet
+     * @return void
      */
     public function edit(Tweet $tweet)
     {
@@ -62,24 +60,23 @@ class TweetController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tweet  $tweet
-     * @return \Illuminate\Http\Response
+     * @param UpdateTweetRequest $updateTweetRequest
+     * @param Tweet $tweet
+     * @param TweetRepository $tweetRepository
      */
-    public function update(Request $request, Tweet $tweet)
+    public function update(UpdateTweetRequest $updateTweetRequest, Tweet $tweet, TweetRepository $tweetRepository)
     {
-        //
+        $tweetRepository->update($tweet, $updateTweetRequest);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Tweet  $tweet
-     * @return \Illuminate\Http\Response
+     * @param Tweet $tweet
+     * @param TweetRepository $tweetRepository
+     * @return bool
      */
-    public function destroy(Tweet $tweet)
+    public function destroy(Tweet $tweet, TweetRepository $tweetRepository): bool
     {
-        //
+        return $tweetRepository->delete($tweet);
     }
 }

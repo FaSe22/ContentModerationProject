@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property mixed $user
  * @property mixed $user_id
+ * @property mixed $id
  */
 class Tweet extends Model
 {
