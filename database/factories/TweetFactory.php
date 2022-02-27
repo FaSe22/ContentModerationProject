@@ -15,7 +15,6 @@ class TweetFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory()->create(),
             'title' => $this->faker->word(),
             'body' => $this->faker->sentence()
         ];
