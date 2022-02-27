@@ -31,7 +31,6 @@ class TweetControllerTest extends TestCase
      */
     public function get_request_should_return_200()
     {
-
         $this->actingAs($this->user)->get('tweets')->assertSuccessful();
     }
 
