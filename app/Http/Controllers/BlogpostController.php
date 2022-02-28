@@ -2,25 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBlogpostRequest;
+use App\Http\Requests\UpdateBlogpostRequest;
 use App\Models\Blogpost;
-use Illuminate\Http\Request;
+use App\Repositories\BlogpostRepository;
 
 class BlogpostController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->authorizeResource(Blogpost::class, 'blogpost');
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function index(BlogpostRepository $blogpostRepository)
     {
-        //
+        $blogpostRepository->blogposts();
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
@@ -30,30 +39,32 @@ class BlogpostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateBlogpostRequest $createBlogpostRequest
+     * @param BlogpostRepository $blogpostRepository
+     * @return void
      */
-    public function store(Request $request)
+    public function store(CreateBlogpostRequest $createBlogpostRequest, BlogpostRepository $blogpostRepository)
     {
-        //
+        $blogpostRepository->create($createBlogpostRequest);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Blogpost  $blogpost
-     * @return \Illuminate\Http\Response
+     * @param Blogpost $blogpost
+     * @param BlogpostRepository $blogpostRepository
+     * @return Blogpost
      */
-    public function show(Blogpost $blogpost)
+    public function show(Blogpost $blogpost, BlogpostRepository $blogpostRepository): Blogpost
     {
-        //
+         return $blogpostRepository->blogpost($blogpost);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Blogpost  $blogpost
-     * @return \Illuminate\Http\Response
+     * @param Blogpost $blogpost
+     * @return void
      */
     public function edit(Blogpost $blogpost)
     {
@@ -62,24 +73,25 @@ class BlogpostController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Blogpost  $blogpost
-     * @return \Illuminate\Http\Response
+     * @param UpdateBlogpostRequest $updateBlogpostRequest
+     * @param Blogpost $blogpost
+     * @param BlogpostRepository $blogpostRepository
+     * @return void
      */
-    public function update(Request $request, Blogpost $blogpost)
+    public function update(UpdateBlogpostRequest $updateBlogpostRequest, Blogpost $blogpost, BlogpostRepository $blogpostRepository)
     {
-        //
+        $blogpostRepository->update($blogpost, $updateBlogpostRequest);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Blogpost  $blogpost
-     * @return \Illuminate\Http\Response
+     * @param Blogpost $blogpost
+     * @param BlogpostRepository $blogpostRepository
+     * @return bool|null
      */
-    public function destroy(Blogpost $blogpost)
+    public function destroy(Blogpost $blogpost, BlogpostRepository $blogpostRepository): ?bool
     {
-        //
+        return $blogpostRepository->delete($blogpost);
     }
 }

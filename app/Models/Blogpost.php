@@ -14,6 +14,7 @@ class Blogpost extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
 
     /**
      * @return BelongsTo
